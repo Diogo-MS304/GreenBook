@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Flora - O teu jardim",
+  "short_name": "Flora",
+  "description": "Cuida das tuas plantas e acompanha as regas.",
+  "lang": "pt-PT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f8f5",
+  "theme_color": "#0b291d",
+  "icons": [
+    {
+      "src": "./assets/icons/flora.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
