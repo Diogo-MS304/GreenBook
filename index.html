@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flora - O teu jardim</title>
+    <meta name="theme-color" content="#0b291d">
+    <link rel="manifest" href="./manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -71,7 +73,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* NOVO DESIGN DO ECRÃ 1 (WELCOME) */
+        /* ECRÃ 1 (WELCOME) */
         .welcome {
             background: linear-gradient(180deg, rgba(14, 38, 28, 0.4) 0%, rgba(10, 26, 19, 0.92) 100%), 
                         url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80');
@@ -307,13 +309,111 @@
             display: none;
             font-weight: 500;
         }
+
+        /* Jogo da Memória */
+        .memory-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .memory-card {
+            background-color: var(--primary);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            height: 65px;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .memory-card .card-front {
+            background-color: var(--primary);
+            color: white;
+            font-size: 20px;
+        }
+
+        .memory-card .card-back {
+            background-color: white;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 11px;
+            transform: rotateY(180deg);
+            border: 1.5px solid var(--primary-light);
+            word-break: break-word;
+        }
+
+        /* Popup de Instalação (PWA) */
+        #install-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(9, 28, 20, 0.68);
+            z-index: 1000;
+        }
+
+        #install-modal.is-open {
+            display: flex;
+        }
+
+        .install-dialog {
+            width: 100%;
+            max-width: 360px;
+            background: white;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
     <div class="app">
 
-        <!-- ECRÃ 1: WELCOME (Novo Design Natureza + Profissional) -->
+        <!-- ECRÃ 1: WELCOME -->
         <div id="s1" class="screen welcome active">
             <div class="welcome-logo-container">
                 <div class="welcome-logo-badge">🌿</div>
@@ -339,13 +439,13 @@
             
             <div class="input-group">
                 <label>E-mail</label>
-                <input type="email" id="login-email" placeholder="nome@exemplo.pt">
-                <div id="login-email-error" class="error-msg">Por favor, insere o teu e-mail.</div>
+                <input type="email" id="login-email" value="teste@teste" placeholder="teste@teste">
+                <div id="login-email-error" class="error-msg">Por favor, insere o e-mail correto (teste@teste).</div>
             </div>
             <div class="input-group">
                 <label>Palavra-passe</label>
-                <input type="password" id="login-pass" placeholder="A tua palavra-passe">
-                <div id="login-pass-error" class="error-msg">Por favor, insere a tua palavra-passe.</div>
+                <input type="password" id="login-pass" value="teste123" placeholder="teste123">
+                <div id="login-pass-error" class="error-msg">Por favor, insere a palavra-passe correta (teste123).</div>
             </div>
             <button class="btn" onclick="loginUser()" style="margin-top: 10px;">Entrar na Conta</button>
         </div>
@@ -413,6 +513,24 @@
             </div>
         </div>
 
+        <!-- ECRÃ: JOGO DA MEMÓRIA -->
+        <div id="s-memory" class="screen">
+            <h2>🌸 Jogo das Flores</h2>
+            <p style="margin-bottom: 10px; font-size: 13px;">Encontra os pares de nomes (10 pts cada) antes do tempo acabar!</p>
+            
+            <div class="memory-info-bar">
+                <span id="timer-display" style="color: var(--accent);">⏳ 45s</span>
+                <span id="score-display" style="color: var(--primary);">⭐ 0 pts</span>
+                <button class="badge-orange" onclick="startMemoryGame()" style="padding: 4px 8px;">🔄 Baralhar</button>
+            </div>
+
+            <div class="memory-grid" id="memory-grid">
+                <!-- Cartas geradas por script -->
+            </div>
+            
+            <button class="btn" onclick="startMemoryGame()" style="padding: 10px; font-size: 13px; margin-top: auto;">Iniciar Jogo</button>
+        </div>
+
         <!-- ECRÃ 5: CATÁLOGO -->
         <div id="s-catalog" class="screen">
             <h2>📖 Catálogo</h2>
@@ -444,13 +562,6 @@
                     </div>
                     <button class="badge-green" onclick="addFromCatalog('Suculenta', 'Sol direto')">+ Adicionar</button>
                 </div>
-                <div class="card catalog-item">
-                    <div>
-                        <strong>Calathea Orbifolia</strong>
-                        <p style="margin: 2px 0 0 0; font-size: 12px;">Sombra parcial • Humidade alta</p>
-                    </div>
-                    <button class="badge-green" onclick="addFromCatalog('Calathea', 'Sombra parcial')">+ Adicionar</button>
-                </div>
             </div>
         </div>
 
@@ -467,13 +578,6 @@
                     <div>
                         <strong>Regador de bico fino</strong>
                         <p style="margin: 2px 0 0 0; font-size: 12px;">Capacidade: 1.5L</p>
-                    </div>
-                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
-                </div>
-                <div class="card">
-                    <div>
-                        <strong>Adubo líquido universal</strong>
-                        <p style="margin: 2px 0 0 0; font-size: 12px;">Para plantas de interior</p>
                     </div>
                     <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
                 </div>
@@ -496,13 +600,6 @@
                     </div>
                     <button class="badge-orange" onclick="toggleTaskStatus(this)">Pendente</button>
                 </div>
-                <div class="card">
-                    <div>
-                        <strong>Quarta-feira</strong>
-                        <p style="margin: 2px 0 0 0; font-size: 12px;">Adubar Sansevieria</p>
-                    </div>
-                    <button class="badge-green" onclick="toggleTaskStatus(this)">Agendado</button>
-                </div>
             </div>
         </div>
 
@@ -513,6 +610,7 @@
             <p id="profile-email" style="margin-bottom: 20px; font-size: 13px;">E-mail: ines@exemplo.pt</p>
 
             <button class="btn" onclick="editProfileName()" style="background-color: var(--primary); margin-bottom: 10px;">Editar Nome</button>
+            <button class="btn" onclick="showInstallModal(true)" style="background-color: var(--primary); margin-bottom: 10px;">Instalar no telemóvel</button>
             <button class="btn" onclick="goTo('s1')" style="background-color: #6B7280;">Terminar Sessão</button>
         </div>
 
@@ -520,6 +618,7 @@
         <div class="nav" id="bottom-nav" style="display: none;">
             <button onclick="switchTab('s4', this)" class="active"><span>🏠</span>Painel</button>
             <button onclick="switchTab('s-catalog', this)"><span>📖</span>Catálogo</button>
+            <button onclick="switchTab('s-memory', this)"><span>🌸</span>Jogo</button>
             <button onclick="switchTab('s-inventory', this)"><span>📦</span>Inventário</button>
             <button onclick="switchTab('s-schedule', this)"><span>📅</span>Agenda</button>
             <button onclick="switchTab('s-profile', this)"><span>👤</span>Perfil</button>
@@ -527,7 +626,94 @@
 
     </div>
 
+    <!-- POPUP DE INSTALAÇÃO NO TELEMÓVEL -->
+    <div id="install-modal" role="presentation">
+        <section class="install-dialog" role="dialog" aria-modal="true" aria-labelledby="install-title" aria-describedby="install-description">
+            <h3 id="install-title" style="margin-bottom: 6px; color: var(--primary);">Instalar Flora 🌿</h3>
+            <p id="install-description" style="font-size: 13px; margin-bottom: 16px;">Adiciona esta aplicação ao ecrã principal do teu telemóvel para um acesso rápido e prático!</p>
+            <p id="install-instructions" style="display: none; font-size: 13px; margin-bottom: 16px;"></p>
+            <div style="display: flex; gap: 8px;">
+                <button id="install-action" class="btn" onclick="installApp()" style="padding: 10px; font-size: 13px;">Instalar</button>
+                <button class="btn" onclick="closeInstallModal()" style="padding: 10px; font-size: 13px; background: #6B7280; box-shadow: none;">Agora não</button>
+            </div>
+        </section>
+    </div>
+
     <script>
+        let deferredInstallPrompt = null;
+        const installDismissedKey = 'flora-install-dismissed';
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            closeInstallModal();
+        });
+
+        function isAppInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches
+                || navigator.standalone === true;
+        }
+
+        function showInstallModal(force = false) {
+            if (isAppInstalled() || (!force && localStorage.getItem(installDismissedKey) === 'true')) {
+                return;
+            }
+
+            const description = document.getElementById('install-description');
+            const instructions = document.getElementById('install-instructions');
+            const action = document.getElementById('install-action');
+            description.style.display = 'block';
+            instructions.style.display = 'none';
+            action.textContent = 'Instalar';
+            action.onclick = installApp;
+            document.getElementById('install-modal').classList.add('is-open');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('install-modal').classList.remove('is-open');
+            localStorage.setItem(installDismissedKey, 'true');
+        }
+
+        async function installApp() {
+            if (!deferredInstallPrompt) {
+                const isAppleMobile = /iPhone|iPad|iPod/.test(navigator.userAgent)
+                    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                const instructions = isAppleMobile
+                    ? "No Safari, toca em Partilhar e escolhe «Adicionar ao ecrã principal»."
+                    : "Abre o menu do navegador e escolhe «Instalar aplicação» ou «Adicionar ao ecrã principal».";
+
+                document.getElementById('install-description').style.display = 'none';
+                document.getElementById('install-instructions').textContent = instructions;
+                document.getElementById('install-instructions').style.display = 'block';
+                document.getElementById('install-action').textContent = 'Entendi';
+                document.getElementById('install-action').onclick = closeInstallModal;
+                return;
+            }
+
+            const installPrompt = deferredInstallPrompt;
+            deferredInstallPrompt = null;
+            await installPrompt.prompt();
+            const { outcome } = await installPrompt.userChoice;
+
+            if (outcome === 'accepted') {
+                closeInstallModal();
+            }
+        }
+
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .catch((error) => console.error('Não foi possível registar o service worker:', error));
+            });
+        }
+
+        window.addEventListener('load', () => {
+            window.setTimeout(showInstallModal, 1200);
+        });
         let userName = "Inês";
         let userEmail = "ines@exemplo.pt";
         let plantCount = 2;
@@ -541,6 +727,9 @@
                 nav.style.display = 'none';
             } else {
                 nav.style.display = 'flex';
+                if(screenId === 's-memory') {
+                    startMemoryGame();
+                }
             }
         }
 
@@ -549,14 +738,14 @@
             const pass = document.getElementById('login-pass').value.trim();
             let isValid = true;
 
-            if(!email) {
+            if(email !== "teste@teste") {
                 document.getElementById('login-email-error').style.display = 'block';
                 isValid = false;
             } else {
                 document.getElementById('login-email-error').style.display = 'none';
             }
 
-            if(!pass) {
+            if(pass !== "teste123") {
                 document.getElementById('login-pass-error').style.display = 'block';
                 isValid = false;
             } else {
@@ -565,10 +754,10 @@
 
             if(isValid) {
                 userEmail = email;
-                userName = email.split('@')[0];
-                userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+                userName = "Teste";
                 updateUserData();
                 goTo('s4');
+                showInstallModal();
             }
         }
 
@@ -604,6 +793,7 @@
                 userEmail = email;
                 updateUserData();
                 goTo('s4');
+                showInstallModal();
             }
         }
 
@@ -631,6 +821,10 @@
             
             document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
+
+            if(screenId === 's-memory') {
+                startMemoryGame();
+            }
         }
 
         function waterFirstPlant() {
@@ -746,6 +940,112 @@
                 btn.textContent = 'Pendente';
             }
         }
+
+        /* --- JOGO DA MEMÓRIA --- */
+        const flowerNames = [
+            "Girassol", "Tulipas", "Rosas", "Catos", "Margarida", 
+            "Lírio", "Cravo", "Violeta", "Hortênsia", "Orquídeas"
+        ];
+
+        let memoryTimer = null;
+        let timeLeft = 45;
+        let score = 0;
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let isLocked = false;
+        let gameActive = false;
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function startMemoryGame() {
+            clearInterval(memoryTimer);
+            timeLeft = 45;
+            score = 0;
+            matchedPairs = 0;
+            flippedCards = [];
+            isLocked = false;
+            gameActive = true;
+
+            document.getElementById('timer-display').textContent = `⏳ ${timeLeft}s`;
+            document.getElementById('score-display').textContent = `⭐ ${score} pts`;
+
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+
+            let deck = [...flowerNames, ...flowerNames];
+            shuffle(deck);
+
+            deck.forEach((name) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.name = name;
+                card.innerHTML = `
+                    <div class="card-face card-front">🌿</div>
+                    <div class="card-face card-back">${name}</div>
+                `;
+                card.addEventListener('click', flipCard);
+                grid.appendChild(card);
+            });
+
+            memoryTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-display').textContent = `⏳ ${timeLeft}s`;
+                if(timeLeft <= 0) {
+                    clearInterval(memoryTimer);
+                    gameActive = false;
+                    alert(`⏰ Tempo esgotado!\nTerminaste com um total de ${score} pontos.`);
+                }
+            }, 1000);
+        }
+
+        function flipCard() {
+            if (!gameActive || isLocked) return;
+            if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.name === card2.dataset.name;
+
+            if (isMatch) {
+                matchedPairs++;
+                score += 10;
+                document.getElementById('score-display').textContent = `⭐ ${score} pts`;
+                flippedCards = [];
+
+                if (matchedPairs === flowerNames.length) {
+                    clearInterval(memoryTimer);
+                    gameActive = false;
+                    setTimeout(() => {
+                        alert(`🏆 Parabéns! Ganhaste o jogo com um total de ${score} pontos!`);
+                    }, 300);
+                }
+            } else {
+                isLocked = true;
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                    isLocked = false;
+                }, 800);
+            }
+        }
+
     </script>
 </body>
 </html>
