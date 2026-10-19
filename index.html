@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flora - O teu jardim</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1B4D3E;
-            --primary-dark: #123529;
-            --accent: #E05A47;
-            --accent-hover: #C84936;
-            --bg-app: #F7F9F6;
+            --primary: #2C5E4B;
+            --primary-dark: #1E4032;
+            --primary-light: #E8F2EC;
+            --accent: #D96B43;
+            --accent-hover: #C25A34;
+            --bg-app: #F4F7F4;
             --card-bg: #FFFFFF;
             --text-main: #1F2937;
             --text-muted: #6B7280;
-            --border-color: #E5E7EB;
-            --radius-lg: 16px;
-            --radius-md: 12px;
+            --border-color: #DDE5E0;
+            --radius-lg: 20px;
+            --radius-md: 14px;
             --radius-sm: 8px;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 25px -5px rgba(44, 94, 75, 0.08), 0 8px 10px -6px rgba(44, 94, 75, 0.04);
         }
 
         * {
@@ -29,7 +30,7 @@
         }
 
         body {
-            background-color: #0F2E23;
+            background-color: #122B20;
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
@@ -42,13 +43,13 @@
             width: 380px;
             height: 720px;
             background-color: var(--bg-app);
-            border-radius: 28px;
+            border-radius: 32px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             position: relative;
-            border: 8px solid #163D31;
+            border: 8px solid #1A3C2F;
         }
 
         .screen {
@@ -70,49 +71,107 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* NOVO DESIGN DO ECRÃ 1 (WELCOME) */
         .welcome {
-            /* Fundo de natureza com imagem e gradiente escuro por cima para legibilidade */
-            background: linear-gradient(to bottom, rgba(11, 41, 29, 0.65), rgba(11, 41, 29, 0.9)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80');
+            background: linear-gradient(180deg, rgba(14, 38, 28, 0.4) 0%, rgba(10, 26, 19, 0.92) 100%), 
+                        url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80');
             background-size: cover;
             background-position: center;
             color: white;
             justify-content: space-between;
-            padding-bottom: 40px;
+            align-items: center;
+            text-align: center;
+            padding: 48px 24px 36px 24px;
         }
 
-        h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin: 12px 0; }
-        h2 { font-size: 22px; font-weight: 700; color: var(--text-main); }
-        h3 { font-size: 16px; font-weight: 600; }
+        .welcome-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .welcome-logo-badge {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            margin-bottom: 16px;
+        }
+
+        .welcome-brand-name {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .welcome-text-container {
+            margin-bottom: 24px;
+        }
+
+        .welcome-text-container h1 {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            color: #F3F7F4;
+        }
+
+        .welcome-text-container p {
+            font-size: 14px;
+            color: #C2D6CA;
+            line-height: 1.5;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .welcome-actions {
+            width: 100%;
+        }
+
+        h1 { font-size: 30px; font-weight: 700; line-height: 1.2; margin: 12px 0; }
+        h2 { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+        h3 { font-size: 16px; font-weight: 600; color: var(--primary-dark); }
         p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-        .welcome p { color: #D1E7DD; }
 
         .btn {
             background-color: var(--accent);
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 15px 20px;
             border-radius: var(--radius-md);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s;
             width: 100%;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(224, 90, 71, 0.25);
+            box-shadow: 0 6px 16px rgba(217, 107, 67, 0.35);
         }
 
         .btn:hover { background-color: var(--accent-hover); }
         .btn:active { transform: scale(0.98); }
 
         .btn-outline {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: white;
             box-shadow: none;
-            margin-top: 10px;
-            backdrop-filter: blur(4px);
+            margin-top: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.2); }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.22); }
 
         .input-group {
             margin-bottom: 16px;
@@ -121,7 +180,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--primary-dark);
             margin-bottom: 6px;
         }
         .input-group input {
@@ -148,7 +207,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(0,0,0,0.02);
+            border: 1px solid rgba(44, 94, 75, 0.05);
         }
 
         .nav {
@@ -161,6 +220,7 @@
             bottom: 0;
             width: 100%;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+            z-index: 10;
         }
 
         .nav button {
@@ -183,14 +243,27 @@
         }
 
         .nav button.active {
-            color: var(--accent);
+            color: var(--primary);
             font-weight: 600;
         }
 
         .badge-orange {
-            background: #FDF2F0;
+            background: #FDF3F0;
             color: var(--accent);
-            padding: 6px 10px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .badge-orange:hover { opacity: 0.85; }
+
+        .badge-green {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
@@ -198,14 +271,16 @@
             cursor: pointer;
         }
 
-        .badge-green {
-            background: #E8F5E9;
-            color: #2E7D32;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+            transition: color 0.2s;
         }
+        .btn-delete:hover { color: var(--accent); }
 
         .back-link {
             cursor: pointer;
@@ -217,12 +292,20 @@
         }
 
         .featured-card {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             padding: 20px;
             border-radius: var(--radius-lg);
             margin-bottom: 20px;
             box-shadow: var(--shadow);
+        }
+
+        .error-msg {
+            color: #D96B43;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -230,14 +313,19 @@
 
     <div class="app">
 
-        <!-- ECRÃ 1: WELCOME (Capa com fundo de natureza/flor) -->
+        <!-- ECRÃ 1: WELCOME (Novo Design Natureza + Profissional) -->
         <div id="s1" class="screen welcome active">
-            <div>
-                <span style="font-size: 24px; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 12px; backdrop-filter: blur(4px);">🌿 Flora</span>
-                <h1 style="margin-top: 24px;">O teu jardim, mais simples.</h1>
-                <p>Cuida melhor de cada planta. Nós lembramos-nos do resto por ti.</p>
+            <div class="welcome-logo-container">
+                <div class="welcome-logo-badge">🌿</div>
+                <div class="welcome-brand-name">Flora</div>
             </div>
-            <div>
+
+            <div class="welcome-text-container">
+                <h1>O teu jardim,<br>mais simples.</h1>
+                <p>Cuida das tuas plantas de forma inteligente. Nós lembramos-nos do resto.</p>
+            </div>
+
+            <div class="welcome-actions">
                 <button class="btn" onclick="goTo('s3')">Começar Agora</button>
                 <button class="btn btn-outline" onclick="goTo('s2')">Já tenho conta</button>
             </div>
@@ -246,16 +334,18 @@
         <!-- ECRÃ 2: ENTRAR -->
         <div id="s2" class="screen">
             <span class="back-link" onclick="goTo('s1')">← Voltar</span>
-            <h2 style="margin-top: 4px;">Entrar</h2>
+            <h2 style="margin-top: 4px;">Bem-vindo de volta</h2>
             <p style="margin-bottom: 24px;">Continua a cuidar do teu jardim verde.</p>
             
             <div class="input-group">
                 <label>E-mail</label>
-                <input type="email" id="login-email" value="ines@exemplo.pt">
+                <input type="email" id="login-email" placeholder="nome@exemplo.pt">
+                <div id="login-email-error" class="error-msg">Por favor, insere o teu e-mail.</div>
             </div>
             <div class="input-group">
                 <label>Palavra-passe</label>
-                <input type="password" id="login-pass" value="123456">
+                <input type="password" id="login-pass" placeholder="A tua palavra-passe">
+                <div id="login-pass-error" class="error-msg">Por favor, insere a tua palavra-passe.</div>
             </div>
             <button class="btn" onclick="loginUser()" style="margin-top: 10px;">Entrar na Conta</button>
         </div>
@@ -268,15 +358,18 @@
             
             <div class="input-group">
                 <label>Nome</label>
-                <input type="text" id="reg-name" value="Inês">
+                <input type="text" id="reg-name" placeholder="Como te chamas?">
+                <div id="reg-name-error" class="error-msg">O campo do nome é obrigatório.</div>
             </div>
             <div class="input-group">
                 <label>E-mail</label>
                 <input type="email" id="reg-email" placeholder="nome@exemplo.pt">
+                <div id="reg-email-error" class="error-msg">Por favor, insere um e-mail válido.</div>
             </div>
             <div class="input-group">
                 <label>Palavra-passe</label>
                 <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+                <div id="reg-pass-error" class="error-msg">A palavra-passe deve ter pelo menos 6 caracteres.</div>
             </div>
             <button class="btn" onclick="registerUser()" style="margin-top: 10px;">Criar Conta</button>
         </div>
@@ -285,55 +378,142 @@
         <div id="s4" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                 <h2>O teu jardim</h2>
-                <button onclick="addPlant()" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:10px; font-weight:bold; font-size: 18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(27,77,62,0.2);">+</button>
+                <button onclick="addPlantPrompt()" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:12px; font-weight:bold; font-size: 18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(44,94,75,0.2);">＋</button>
             </div>
-            <p id="user-greeting" style="margin-bottom: 16px;">Boa tarde, Inês (2 plantas)</p>
+            <p id="user-greeting" style="margin-bottom: 16px; font-weight: 500;">Boa tarde, Inês (2 plantas)</p>
             
             <div class="featured-card">
-                <p style="color: #A3B8AD; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">PRÓXIMA REGA</p>
-                <h3 id="next-water" style="margin: 6px 0 14px 0; font-size: 18px;">Monstera • Hoje</h3>
-                <button class="btn" onclick="waterPlant()" style="padding: 8px 16px; width: auto; font-size: 12px; display: inline-block;">Regar Agora</button>
+                <p style="color: #A3C1B4; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">PRÓXIMA REGA</p>
+                <h3 id="next-water" style="color: white; margin: 6px 0 14px 0; font-size: 18px;">Monstera • Hoje</h3>
+                <button class="btn" onclick="waterFirstPlant()" style="padding: 8px 16px; width: auto; font-size: 12px; display: inline-block; background-color: var(--accent);">Regar Agora</button>
             </div>
 
             <h3 style="margin-bottom: 12px;">As tuas plantas</h3>
             <div id="plant-list">
-                <div class="card" id="plant-1">
+                <div class="card">
                     <div>
                         <strong>Monstera</strong>
                         <p style="margin: 2px 0 0 0; font-size: 12px;">Luz indireta</p>
                     </div>
-                    <span class="badge-orange" id="status-1" onclick="waterPlant()">Regar hoje</span>
+                    <div style="display: flex; align-items: center;">
+                        <button class="badge-orange plant-status" onclick="waterSpecificPlant(this)">Regar hoje</button>
+                        <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                    </div>
                 </div>
                 <div class="card">
                     <div>
                         <strong>Sansevieria</strong>
                         <p style="margin: 2px 0 0 0; font-size: 12px;">Luz indireta</p>
                     </div>
-                    <span class="badge-green">Em dia</span>
+                    <div style="display: flex; align-items: center;">
+                        <button class="badge-green plant-status">Em dia</button>
+                        <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ECRÃS SECUNDÁRIOS -->
+        <!-- ECRÃ 5: CATÁLOGO -->
         <div id="s-catalog" class="screen">
             <h2>📖 Catálogo</h2>
-            <p style="margin-top: 10px;">Explora novas espécies para adicionar ao teu jardim em breve.</p>
+            <p style="margin-top: 6px; margin-bottom: 12px;">Explora espécies e adiciona-as diretamente ao teu jardim.</p>
+            
+            <div class="input-group" style="margin-bottom: 16px;">
+                <input type="text" id="catalog-search" placeholder="🔍 Pesquisar plantas..." oninput="filterCatalog()">
+            </div>
+            
+            <div id="catalog-list">
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Ficus Lyrata</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz abundante • Rega semanal</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Ficus Lyrata', 'Luz abundante')">+ Adicionar</button>
+                </div>
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Potho</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz moderada • Rega quinzenal</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Potho', 'Luz moderada')">+ Adicionar</button>
+                </div>
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Suculenta Echeveria</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Sol direto • Rega escassa</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Suculenta', 'Sol direto')">+ Adicionar</button>
+                </div>
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Calathea Orbifolia</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Sombra parcial • Humidade alta</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Calathea', 'Sombra parcial')">+ Adicionar</button>
+                </div>
+            </div>
         </div>
 
+        <!-- ECRÃ 6: INVENTÁRIO -->
         <div id="s-inventory" class="screen">
-            <h2>📦 Inventário</h2>
-            <p style="margin-top: 10px;">Os teus acessórios e ferramentas de jardinagem guardados.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h2>📦 Inventário</h2>
+                <button onclick="addInventoryItem()" style="background:var(--primary); color:white; border:none; width:32px; height:32px; border-radius:10px; font-weight:bold; font-size: 16px; cursor:pointer;">＋</button>
+            </div>
+            <p style="margin-bottom: 16px;">Os teus acessórios e ferramentas de jardinagem.</p>
+            
+            <div id="inventory-list">
+                <div class="card">
+                    <div>
+                        <strong>Regador de bico fino</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Capacidade: 1.5L</p>
+                    </div>
+                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
+                </div>
+                <div class="card">
+                    <div>
+                        <strong>Adubo líquido universal</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Para plantas de interior</p>
+                    </div>
+                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
+                </div>
+            </div>
         </div>
 
+        <!-- ECRÃ 7: AGENDA -->
         <div id="s-schedule" class="screen">
-            <h2>📅 Agenda</h2>
-            <p style="margin-top: 10px;">Calendário detalhado de regas e fertilização.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h2>📅 Agenda</h2>
+                <button onclick="addScheduleTask()" style="background:var(--primary); color:white; border:none; width:32px; height:32px; border-radius:10px; font-weight:bold; font-size: 16px; cursor:pointer;">＋</button>
+            </div>
+            <p style="margin-bottom: 16px;">Calendário detalhado de regas e fertilização.</p>
+            
+            <div id="schedule-list">
+                <div class="card">
+                    <div>
+                        <strong>Hoje</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Regar Monstera</p>
+                    </div>
+                    <button class="badge-orange" onclick="toggleTaskStatus(this)">Pendente</button>
+                </div>
+                <div class="card">
+                    <div>
+                        <strong>Quarta-feira</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Adubar Sansevieria</p>
+                    </div>
+                    <button class="badge-green" onclick="toggleTaskStatus(this)">Agendado</button>
+                </div>
+            </div>
         </div>
 
+        <!-- ECRÃ 8: PERFIL -->
         <div id="s-profile" class="screen">
             <h2>👤 Perfil</h2>
-            <p id="profile-name" style="margin: 16px 0; font-weight: 600; color: var(--text-main);">Nome: Inês</p>
-            <button class="btn" onclick="goTo('s1')" style="background-color: #4B5563; margin-top: 10px;">Terminar Sessão</button>
+            <p id="profile-name" style="margin: 16px 0 4px 0; font-weight: 600; color: var(--text-main);">Nome: Inês</p>
+            <p id="profile-email" style="margin-bottom: 20px; font-size: 13px;">E-mail: ines@exemplo.pt</p>
+
+            <button class="btn" onclick="editProfileName()" style="background-color: var(--primary); margin-bottom: 10px;">Editar Nome</button>
+            <button class="btn" onclick="goTo('s1')" style="background-color: #6B7280;">Terminar Sessão</button>
         </div>
 
         <!-- Menu Inferior -->
@@ -349,6 +529,8 @@
 
     <script>
         let userName = "Inês";
+        let userEmail = "ines@exemplo.pt";
+        let plantCount = 2;
 
         function goTo(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -363,21 +545,80 @@
         }
 
         function loginUser() {
-            userName = "Inês";
-            updateUserData();
-            goTo('s4');
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            let isValid = true;
+
+            if(!email) {
+                document.getElementById('login-email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('login-email-error').style.display = 'none';
+            }
+
+            if(!pass) {
+                document.getElementById('login-pass-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('login-pass-error').style.display = 'none';
+            }
+
+            if(isValid) {
+                userEmail = email;
+                userName = email.split('@')[0];
+                userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+                updateUserData();
+                goTo('s4');
+            }
         }
 
         function registerUser() {
-            const nameInput = document.getElementById('reg-name').value;
-            if(nameInput) userName = nameInput;
-            updateUserData();
-            goTo('s4');
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            let isValid = true;
+
+            if(!name) {
+                document.getElementById('reg-name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-name-error').style.display = 'none';
+            }
+
+            if(!email || !email.includes('@')) {
+                document.getElementById('reg-email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-email-error').style.display = 'none';
+            }
+
+            if(!pass || pass.length < 6) {
+                document.getElementById('reg-pass-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-pass-error').style.display = 'none';
+            }
+
+            if(isValid) {
+                userName = name;
+                userEmail = email;
+                updateUserData();
+                goTo('s4');
+            }
         }
 
         function updateUserData() {
-            document.getElementById('user-greeting').textContent = `Boa tarde, ${userName} (2 plantas)`;
+            document.getElementById('user-greeting').textContent = `Boa tarde, ${userName} (${plantCount} plantas)`;
             document.getElementById('profile-name').textContent = `Nome: ${userName}`;
+            document.getElementById('profile-email').textContent = `E-mail: ${userEmail}`;
+        }
+
+        function editProfileName() {
+            const newName = prompt("Insere o teu novo nome:", userName);
+            if (newName && newName.trim() !== "") {
+                userName = newName.trim();
+                updateUserData();
+            }
         }
 
         function switchTab(screenId, btnElement) {
@@ -392,27 +633,117 @@
             btnElement.classList.add('active');
         }
 
-        function waterPlant() {
-            const status1 = document.getElementById('status-1');
-            status1.className = 'badge-green';
-            status1.textContent = 'Em dia';
+        function waterFirstPlant() {
+            const firstBadge = document.querySelector('#plant-list .card .plant-status');
+            if(firstBadge) {
+                firstBadge.className = 'badge-green plant-status';
+                firstBadge.textContent = 'Em dia';
+            }
             document.getElementById('next-water').textContent = 'Tudo em dia! ✨';
         }
 
-        function addPlant() {
+        function waterSpecificPlant(btn) {
+            btn.className = 'badge-green plant-status';
+            btn.textContent = 'Em dia';
+            document.getElementById('next-water').textContent = 'Tudo em dia! ✨';
+        }
+
+        function addPlantPrompt() {
             const plantName = prompt("Nome da nova planta:");
             if (plantName) {
-                const list = document.getElementById('plant-list');
+                addNewPlant(plantName, 'Luz indireta');
+            }
+        }
+
+        function addFromCatalog(name, light) {
+            addNewPlant(name, light);
+            alert(`"${name}" foi adicionada ao teu jardim! 🌿`);
+            switchTab('s4', document.querySelector('.nav button'));
+        }
+
+        function addNewPlant(name, light) {
+            plantCount++;
+            const list = document.getElementById('plant-list');
+            const newCard = document.createElement('div');
+            newCard.className = 'card';
+            newCard.innerHTML = `
+                <div>
+                    <strong>${name}</strong>
+                    <p style="margin: 2px 0 0 0; font-size: 12px;">${light}</p>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <button class="badge-green plant-status">Em dia</button>
+                    <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                </div>
+            `;
+            list.appendChild(newCard);
+            updateUserData();
+        }
+
+        function deletePlant(btn) {
+            if(confirm("Tens a certeza que queres remover esta planta?")) {
+                const card = btn.closest('.card');
+                card.remove();
+                plantCount = Math.max(0, plantCount - 1);
+                updateUserData();
+            }
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById('catalog-search').value.toLowerCase();
+            const items = document.querySelectorAll('.catalog-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function addInventoryItem() {
+            const itemName = prompt("Nome do acessório ou ferramenta:");
+            if(itemName) {
+                const list = document.getElementById('inventory-list');
                 const newCard = document.createElement('div');
                 newCard.className = 'card';
                 newCard.innerHTML = `
                     <div>
-                        <strong>${plantName}</strong>
-                        <p style="margin: 2px 0 0 0; font-size: 12px;">Adicionada agora</p>
+                        <strong>${itemName}</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Adicionado recentemente</p>
                     </div>
-                    <span class="badge-green">Em dia</span>
+                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
                 `;
                 list.appendChild(newCard);
+            }
+        }
+
+        function removeItem(btn) {
+            btn.closest('.card').remove();
+        }
+
+        function addScheduleTask() {
+            const task = prompt("Descrição da tarefa (ex: Fertilizar cactos):");
+            const day = prompt("Dia da tarefa (ex: Sexta-feira):", "Amanhã");
+            if (task && day) {
+                const list = document.getElementById('schedule-list');
+                const newCard = document.createElement('div');
+                newCard.className = 'card';
+                newCard.innerHTML = `
+                    <div>
+                        <strong>${day}</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">${task}</p>
+                    </div>
+                    <button class="badge-orange" onclick="toggleTaskStatus(this)">Pendente</button>
+                `;
+                list.appendChild(newCard);
+            }
+        }
+
+        function toggleTaskStatus(btn) {
+            if (btn.classList.contains('badge-orange')) {
+                btn.className = 'badge-green';
+                btn.textContent = 'Concluído';
+            } else {
+                btn.className = 'badge-orange';
+                btn.textContent = 'Pendente';
             }
         }
     </script>
