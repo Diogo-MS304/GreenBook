@@ -1,6 +1,7 @@
-const CACHE_NAME = "flora-shell-v1";
+const CACHE_NAME = "flora-shell-v2";
 const APP_SHELL = [
     "./",
+    "./index.html",
     "./manifest.webmanifest",
     "./assets/icons/flora.svg"
 ];
@@ -33,7 +34,7 @@ self.addEventListener("fetch", (event) => {
 
     if (request.mode === "navigate") {
         event.respondWith(
-            fetch(request).catch(() => caches.match("./"))
+            fetch(request).catch(() => caches.match("./index.html"))
         );
         return;
     }
