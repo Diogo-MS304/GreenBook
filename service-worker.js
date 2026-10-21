@@ -1,9 +1,13 @@
-const CACHE_NAME = "flora-shell-v2";
+const CACHE_NAME = "flora-shell-v3";
 const APP_SHELL = [
     "./",
     "./index.html",
     "./manifest.webmanifest",
-    "./assets/icons/flora.svg"
+    "./assets/icons/flora.svg",
+    "./assets/icons/apple-touch-icon.png",
+    "./assets/icons/flora-192.png",
+    "./assets/icons/flora-512.png",
+    "./assets/icons/flora-maskable-512.png"
 ];
 
 self.addEventListener("install", (event) => {

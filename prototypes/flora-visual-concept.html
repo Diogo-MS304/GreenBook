@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora - O teu jardim mais simples</title>
+    <style>
+        :root {
+            --bg-dark: #0b291d;
+            --bg-light: #f4f8f5;
+            --primary-color: #0b291d;
+            --accent-orange: #f25c33;
+            --card-bg: #ffffff;
+            --text-main: #1f3a2e;
+            --text-muted: #5a7367;
+            --border-color: #d1ded6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container simulando um telemóvel para melhor visualização, mas responsivo */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 850px;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        @media (min-width: 421px) {
+            .app-container {
+                border-radius: 24px;
+                border: 8px solid #1a3f30;
+            }
+        }
+
+        /* Sistema de Ecrãs (Views) */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Bar Comum */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .logo-icon {
+            background-color: #1a4d36;
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Botões */
+        .btn-orange {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: background 0.2s;
+            margin-bottom: 0.8rem;
+        }
+
+        .btn-orange:hover {
+            background-color: #d94e28;
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 0.9rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* --- ECRÃ 1: WELCOME --- */
+        #screen-welcome {
+            justify-content: space-between;
+        }
+
+        .welcome-content h1 {
+            color: white;
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+
+        .welcome-content h1 span {
+            display: block;
+        }
+
+        .welcome-content p {
+            color: #a3b8ad;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-features {
+            background-color: var(--bg-light);
+            margin: -1.5rem;
+            padding: 1.5rem;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            color: var(--text-main);
+        }
+
+        .welcome-features h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-bottom: 0.6rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .feature-icon {
+            background-color: #e6f0eb;
+            color: var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .feature-text h4 {
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .feature-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* --- ECRÃS 2 & 3: LOGIN / REGISTO --- */
+        .auth-screen {
+            background-color: var(--bg-light);
+            margin: -1.5rem;
+            padding: 1.5rem;
+            flex: 1;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            margin-top: 1rem;
+        }
+
+        .auth-screen .top-bar .logo-badge {
+            color: var(--text-main);
+        }
+        .auth-screen .top-bar .logo-icon {
+            background-color: var(--primary-color);
+        }
+        .auth-screen .back-btn {
+            color: var(--text-main);
+        }
+
+        .auth-header h2 {
+            font-size: 1.6rem;
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+        }
+
+        .auth-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .forgot-pass {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 1rem 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .btn-google {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- ECRÃ 4: DASHBOARD --- */
+        #screen-dashboard {
+            background-color: var(--bg-light);
+            margin: -1.5rem;
+            padding: 1.5rem;
+            flex: 1;
+            border-radius: 0;
+            overflow-y: auto;
+            padding-bottom: 5rem;
+        }
+
+        #screen-dashboard .top-bar .logo-badge {
+            color: var(--text-main);
+        }
+        #screen-dashboard .top-bar .logo-icon {
+            background-color: var(--primary-color);
+        }
+
+        .add-plant-btn {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-greeting {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .dashboard-title {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .alert-card {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .alert-info span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #a3b8ad;
+            display: block;
+        }
+
+        .alert-info h4 {
+            font-size: 1rem;
+            margin-top: 2px;
+        }
+
+        .btn-small-orange {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .stat-box h3 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .stat-box p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .section-header-small {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-main-title {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+        }
+
+        .plant-card {
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            justify-content: space-between;
+        }
+
+        .plant-info-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .plant-img-placeholder {
+            width: 50px;
+            height: 50px;
+            background: #e2e8e4;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .plant-details h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .plant-details p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .badge-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-orange-light {
+            background-color: #faece7;
+            color: var(--accent-orange);
+        }
+
+        .badge-green-light {
+            background-color: #e6f0eb;
+            color: var(--primary-color);
+        }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-dark);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: #7b9487;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-orange);
+        }
+
+        .nav-item span.icon {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- ECRÃ 1: WELCOME -->
+        <div id="screen-welcome" class="screen active">
+            <div>
+                <div class="top-bar" style="margin-bottom: 1rem;">
+                    <div class="logo-badge">
+                        <div class="logo-icon">F</div>
+                        Flora
+                    </div>
+                </div>
+                <div class="welcome-content">
+                    <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; color: #a3b8ad; margin-bottom: 0.3rem;">O teu jardim,</p>
+                    <h1>Mais simples.</h1>
+                    <p>Cuida melhor de cada planta. Nós lembramos o resto.</p>
+                    <button class="btn-orange" onclick="switchScreen('screen-register')">COMEÇAR AGORA</button>
+                    <button class="btn-outline-light" onclick="switchScreen('screen-login')">JÁ TENHO CONTA</button>
+                </div>
+            </div>
+
+            <div class="welcome-features">
+                <h3>Tudo o que as tuas plantas precisam</h3>
+                <div class="feature-item">
+                    <div class="feature-icon">💧</div>
+                    <div class="feature-text">
+                        <h4>Cuidados simples</h4>
+                        <p>Água, luz e terra sem complicações.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔔</div>
+                    <div class="feature-text">
+                        <h4>Rotina organizada</h4>
+                        <p>Lembretes para nunca te esqueceres.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌿</div>
+                    <div class="feature-text">
+                        <h4>Descobre espécies</h4>
+                        <p>Um guia geral sempre à mão.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 2: LOGIN -->
+        <div id="screen-login" class="screen">
+            <div class="top-bar">
+                <button class="back-btn" onclick="switchScreen('screen-welcome')">&lt;</button>
+                <div class="logo-badge" style="color: var(--text-main);">
+                    <div class="logo-icon">F</div>
+                    Flora
+                </div>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div class="auth-screen">
+                <div class="auth-header">
+                    <p style="text-transform: uppercase; font-size: 0.7rem; font-weight: bold; color: var(--text-muted);">Bem-vindo de volta</p>
+                    <h2>Entrar</h2>
+                    <p>Continua a cuidar do teu jardim.</p>
+                </div>
+
+                <form onsubmit="handleAuth(event)">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" placeholder="nome@exemplo.pt" required value="ines@exemplo.pt">
+                    </div>
+                    <div class="form-group">
+                        <label>Palavra-passe</label>
+                        <input type="password" placeholder="********" required value="123456">
+                    </div>
+                    <div class="forgot-pass">Esqueceste-te da palavra-passe?</div>
+                    <button type="submit" class="btn-orange">ENTRAR</button>
+                </form>
+
+                <div class="divider">ou</div>
+
+                <button class="btn-google" onclick="switchScreen('screen-dashboard')">
+                    G Continuar com Google
+                </button>
+
+                <div class="auth-footer">
+                    Ainda não tens conta? <a onclick="switchScreen('screen-register')">Criar conta</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 3: CRIAR CONTA -->
+        <div id="screen-register" class="screen">
+            <div class="top-bar">
+                <button class="back-btn" onclick="switchScreen('screen-welcome')">&lt;</button>
+                <div class="logo-badge" style="color: var(--text-main);">
+                    <div class="logo-icon">F</div>
+                    Flora
+                </div>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div class="auth-screen">
+                <div class="auth-header">
+                    <p style="text-transform: uppercase; font-size: 0.7rem; font-weight: bold; color: var(--text-muted);">Cria o teu jardim</p>
+                    <h2>Criar conta</h2>
+                    <p>Começa a cuidar melhor das tuas plantas.</p>
+                </div>
+
+                <form onsubmit="handleAuth(event)">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" placeholder="O teu nome" required value="Inês">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" placeholder="nome@exemplo.pt" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Palavra-passe</label>
+                        <input type="password" placeholder="********" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar palavra-passe</label>
+                        <input type="password" placeholder="********" required>
+                    </div>
+                    <button type="submit" class="btn-orange" style="margin-top: 0.5rem;">CRIAR CONTA</button>
+                </form>
+
+                <div class="divider">ou</div>
+
+                <button class="btn-google" onclick="switchScreen('screen-dashboard')">
+                    G Continuar com Google
+                </button>
+
+                <div class="auth-footer">
+                    Já tens conta? <a onclick="switchScreen('screen-login')">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 4: DASHBOARD (PAINEL) -->
+        <div id="screen-dashboard" class="screen">
+            <div class="top-bar" style="margin-bottom: 0.5rem;">
+                <div class="logo-badge" style="color: var(--text-main);">
+                    <div class="logo-icon">F</div>
+                    Flora
+                </div>
+                <button class="add-plant-btn">+</button>
+            </div>
+
+            <div>
+                <p class="dashboard-greeting">Boa tarde, Inês - 3 plantas</p>
+                <h2 class="dashboard-title">O teu jardim em ordem</h2>
+
+                <div class="alert-card">
+                    <div class="alert-info">
+                        <span>Próxima riga</span>
+                        <h4>Monstera • hoje</h4>
+                    </div>
+                    <button class="btn-small-orange">Regar</button>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <h3>3</h3>
+                        <p>Plantas</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>3</h3>
+                        <p>Para regar</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>2</h3>
+                        <p>Luz baixa</p>
+                    </div>
+                </div>
+
+                <p class="section-header-small">Coleção pessoal</p>
+                <h3 class="section-main-title">As tuas plantas</h3>
+
+                <div class="plant-card">
+                    <div class="plant-info-group">
+                        <div class="plant-img-placeholder">🌿</div>
+                        <div class="plant-details">
+                            <h4>Monstera</h4>
+                            <p>Interior • Luz indireta</p>
+                        </div>
+                    </div>
+                    <span class="badge-status badge-orange-light">Regar hoje</span>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-info-group">
+                        <div class="plant-img-placeholder">🪴</div>
+                        <div class="plant-details">
+                            <h4>Sansevieria</h4>
+                            <p>Interior • Luz indireta</p>
+                        </div>
+                    </div>
+                    <span class="badge-status badge-green-light">Em dia</span>
+                </div>
+            </div>
+
+            <!-- Navegação Inferior -->
+            <div class="bottom-nav">
+                <button class="nav-item active">
+                    <span class="icon">🏠</span>
+                    Painel
+                </button>
+                <button class="nav-item" onclick="alert('Secção de Catálogo')">
+                    <span class="icon">📖</span>
+                    Catálogo
+                </button>
+                <button class="nav-item" onclick="alert('Secção de Inventário')">
+                    <span class="icon">📦</span>
+                    Inventário
+                </button>
+                <button class="nav-item" onclick="alert('Secção de Agenda')">
+                    <span class="icon">📅</span>
+                    Agenda
+                </button>
+                <button class="nav-item" onclick="alert('Secção de Perfil')">
+                    <span class="icon">👤</span>
+                    Perfil
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Função simples para alternar entre os ecrãs da aplicação
+        function switchScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Simula o comportamento de submissão de formulário de login/registo e vai direto ao painel
+        function handleAuth(event) {
+            event.preventDefault();
+            switchScreen('screen-dashboard');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora - O teu jardim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2C5E4B;
+            --primary-dark: #1E4032;
+            --primary-light: #E8F2EC;
+            --accent: #D96B43;
+            --accent-hover: #C25A34;
+            --bg-app: #F4F7F4;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #DDE5E0;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --shadow: 0 10px 25px -5px rgba(44, 94, 75, 0.08), 0 8px 10px -6px rgba(44, 94, 75, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #122B20;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app {
+            width: 380px;
+            height: 720px;
+            background-color: var(--bg-app);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border: 8px solid #1A3C2F;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            padding-bottom: 90px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ECRÃ 1 (WELCOME) */
+        .welcome {
+            background: linear-gradient(180deg, rgba(14, 38, 28, 0.4) 0%, rgba(10, 26, 19, 0.92) 100%), 
+                        url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 48px 24px 36px 24px;
+        }
+
+        .welcome-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .welcome-logo-badge {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            margin-bottom: 16px;
+        }
+
+        .welcome-brand-name {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .welcome-text-container {
+            margin-bottom: 24px;
+        }
+
+        .welcome-text-container h1 {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            color: #F3F7F4;
+        }
+
+        .welcome-text-container p {
+            font-size: 14px;
+            color: #C2D6CA;
+            line-height: 1.5;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .welcome-actions {
+            width: 100%;
+        }
+
+        h1 { font-size: 30px; font-weight: 700; line-height: 1.2; margin: 12px 0; }
+        h2 { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+        h3 { font-size: 16px; font-weight: 600; color: var(--primary-dark); }
+        p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(217, 107, 67, 0.35);
+        }
+
+        .btn:hover { background-color: var(--accent-hover); }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: white;
+            box-shadow: none;
+            margin-top: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.22); }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(44, 94, 75, 0.05);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 10px 0 16px 0;
+            border-top: 1px solid var(--border-color);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+            z-index: 10;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-family: inherit;
+            transition: color 0.2s;
+        }
+
+        .nav button span {
+            font-size: 18px;
+        }
+
+        .nav button.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .badge-orange {
+            background: #FDF3F0;
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .badge-orange:hover { opacity: 0.85; }
+
+        .badge-green {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+            transition: color 0.2s;
+        }
+        .btn-delete:hover { color: var(--accent); }
+
+        .back-link {
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .featured-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .error-msg {
+            color: #D96B43;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Estilos do Jogo da Memória */
+        .memory-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .memory-card {
+            background-color: var(--primary);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            height: 65px;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .memory-card .card-front {
+            background-color: var(--primary);
+            color: white;
+            font-size: 20px;
+        }
+
+        .memory-card .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            padding: 3px;
+        }
+
+        .memory-card .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* POPUP DE INSTALAÇÃO NO TELEMÓVEL (PWA) */
+        #install-modal {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 340px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 50px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <!-- ECRÃ 1: WELCOME -->
+        <div id="s1" class="screen welcome active">
+            <div class="welcome-logo-container">
+                <div class="welcome-logo-badge">🌿</div>
+                <div class="welcome-brand-name">Flora</div>
+            </div>
+
+            <div class="welcome-text-container">
+                <h1>O teu jardim,<br>mais simples.</h1>
+                <p>Cuida das tuas plantas de forma inteligente. Nós lembramos-nos do resto.</p>
+            </div>
+
+            <div class="welcome-actions">
+                <button class="btn" onclick="goTo('s3')">Começar Agora</button>
+                <button class="btn btn-outline" onclick="goTo('s2')">Já tenho conta</button>
+            </div>
+        </div>
+
+        <!-- ECRÃ 2: ENTRAR -->
+        <div id="s2" class="screen">
+            <span class="back-link" onclick="goTo('s1')">← Voltar</span>
+            <h2 style="margin-top: 4px;">Bem-vindo de volta</h2>
+            <p style="margin-bottom: 24px;">Continua a cuidar do teu jardim verde.</p>
+            
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" id="login-email" placeholder="nome@exemplo.pt">
+                <div id="login-email-error" class="error-msg">Por favor, insere o teu e-mail.</div>
+            </div>
+            <div class="input-group">
+                <label>Palavra-passe</label>
+                <input type="password" id="login-pass" placeholder="A tua palavra-passe">
+                <div id="login-pass-error" class="error-msg">Por favor, insere a tua palavra-passe.</div>
+            </div>
+            <button class="btn" onclick="loginUser()" style="margin-top: 10px;">Entrar na Conta</button>
+        </div>
+
+        <!-- ECRÃ 3: CRIAR CONTA -->
+        <div id="s3" class="screen">
+            <span class="back-link" onclick="goTo('s1')">← Voltar</span>
+            <h2 style="margin-top: 4px;">Criar conta</h2>
+            <p style="margin-bottom: 24px;">Junta-te a nós e começa a cuidar melhor das tuas plantas.</p>
+            
+            <div class="input-group">
+                <label>Nome</label>
+                <input type="text" id="reg-name" placeholder="Como te chamas?">
+                <div id="reg-name-error" class="error-msg">O campo do nome é obrigatório.</div>
+            </div>
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" id="reg-email" placeholder="nome@exemplo.pt">
+                <div id="reg-email-error" class="error-msg">Por favor, insere um e-mail válido.</div>
+            </div>
+            <div class="input-group">
+                <label>Palavra-passe</label>
+                <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+                <div id="reg-pass-error" class="error-msg">A palavra-passe deve ter pelo menos 6 caracteres.</div>
+            </div>
+            <button class="btn" onclick="registerUser()" style="margin-top: 10px;">Criar Conta</button>
+        </div>
+
+        <!-- ECRÃ 4: DASHBOARD -->
+        <div id="s4" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <h2>O teu jardim</h2>
+                <button onclick="addPlantPrompt()" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:12px; font-weight:bold; font-size: 18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(44,94,75,0.2);">＋</button>
+            </div>
+            <p id="user-greeting" style="margin-bottom: 16px; font-weight: 500;">Boa tarde, Inês (2 plantas)</p>
+            
+            <div class="featured-card">
+                <p style="color: #A3C1B4; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">PRÓXIMA REGA</p>
+                <h3 id="next-water" style="color: white; margin: 6px 0 14px 0; font-size: 18px;">Monstera • Hoje</h3>
+                <button class="btn" onclick="waterFirstPlant()" style="padding: 8px 16px; width: auto; font-size: 12px; display: inline-block; background-color: var(--accent);">Regar Agora</button>
+            </div>
+
+            <h3 style="margin-bottom: 12px;">As tuas plantas</h3>
+            <div id="plant-list">
+                <div class="card">
+                    <div>
+                        <strong>Monstera</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz indireta</p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <button class="badge-orange plant-status" onclick="waterSpecificPlant(this)">Regar hoje</button>
+                        <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <strong>Sansevieria</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz indireta</p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <button class="badge-green plant-status">Em dia</button>
+                        <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ: JOGO DA MEMÓRIA -->
+        <div id="s-memory" class="screen">
+            <h2>🌸 Jogo das Flores</h2>
+            <p style="margin-bottom: 10px; font-size: 13px;">Encontra os pares (10 pts cada) antes que o tempo acabe!</p>
+            
+            <div class="memory-info-bar">
+                <span id="timer-display" style="color: var(--accent);">⏳ 45s</span>
+                <span id="score-display" style="color: var(--primary);">⭐ 0 pts</span>
+                <button class="badge-orange" onclick="startMemoryGame()" style="padding: 4px 8px;">🔄 Reiniciar</button>
+            </div>
+
+            <div class="memory-grid" id="memory-grid">
+                <!-- Cartas geradas por script -->
+            </div>
+            
+            <button class="btn" onclick="startMemoryGame()" style="padding: 10px; font-size: 13px; margin-top: auto;">Iniciar Jogo</button>
+        </div>
+
+        <!-- ECRÃ 5: CATÁLOGO -->
+        <div id="s-catalog" class="screen">
+            <h2>📖 Catálogo</h2>
+            <p style="margin-top: 6px; margin-bottom: 12px;">Explora espécies e adiciona-as diretamente ao teu jardim.</p>
+            
+            <div class="input-group" style="margin-bottom: 16px;">
+                <input type="text" id="catalog-search" placeholder="🔍 Pesquisar plantas..." oninput="filterCatalog()">
+            </div>
+            
+            <div id="catalog-list">
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Ficus Lyrata</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz abundante • Rega semanal</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Ficus Lyrata', 'Luz abundante')">+ Adicionar</button>
+                </div>
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Potho</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Luz moderada • Rega quinzenal</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Potho', 'Luz moderada')">+ Adicionar</button>
+                </div>
+                <div class="card catalog-item">
+                    <div>
+                        <strong>Suculenta Echeveria</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Sol direto • Rega escassa</p>
+                    </div>
+                    <button class="badge-green" onclick="addFromCatalog('Suculenta', 'Sol direto')">+ Adicionar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 6: INVENTÁRIO -->
+        <div id="s-inventory" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h2>📦 Inventário</h2>
+                <button onclick="addInventoryItem()" style="background:var(--primary); color:white; border:none; width:32px; height:32px; border-radius:10px; font-weight:bold; font-size: 16px; cursor:pointer;">＋</button>
+            </div>
+            <p style="margin-bottom: 16px;">Os teus acessórios e ferramentas de jardinagem.</p>
+            
+            <div id="inventory-list">
+                <div class="card">
+                    <div>
+                        <strong>Regador de bico fino</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Capacidade: 1.5L</p>
+                    </div>
+                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 7: AGENDA -->
+        <div id="s-schedule" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h2>📅 Agenda</h2>
+                <button onclick="addScheduleTask()" style="background:var(--primary); color:white; border:none; width:32px; height:32px; border-radius:10px; font-weight:bold; font-size: 16px; cursor:pointer;">＋</button>
+            </div>
+            <p style="margin-bottom: 16px;">Calendário detalhado de regas e fertilização.</p>
+            
+            <div id="schedule-list">
+                <div class="card">
+                    <div>
+                        <strong>Hoje</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Regar Monstera</p>
+                    </div>
+                    <button class="badge-orange" onclick="toggleTaskStatus(this)">Pendente</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECRÃ 8: PERFIL -->
+        <div id="s-profile" class="screen">
+            <h2>👤 Perfil</h2>
+            <p id="profile-name" style="margin: 16px 0 4px 0; font-weight: 600; color: var(--text-main);">Nome: Inês</p>
+            <p id="profile-email" style="margin-bottom: 20px; font-size: 13px;">E-mail: ines@exemplo.pt</p>
+
+            <button class="btn" onclick="editProfileName()" style="background-color: var(--primary); margin-bottom: 10px;">Editar Nome</button>
+            <button class="btn" onclick="goTo('s1')" style="background-color: #6B7280;">Terminar Sessão</button>
+        </div>
+
+        <!-- Menu Inferior -->
+        <div class="nav" id="bottom-nav" style="display: none;">
+            <button onclick="switchTab('s4', this)" class="active"><span>🏠</span>Painel</button>
+            <button onclick="switchTab('s-catalog', this)"><span>📖</span>Catálogo</button>
+            <button onclick="switchTab('s-memory', this)"><span>🌸</span>Jogo</button>
+            <button onclick="switchTab('s-inventory', this)"><span>📦</span>Inventário</button>
+            <button onclick="switchTab('s-schedule', this)"><span>📅</span>Agenda</button>
+            <button onclick="switchTab('s-profile', this)"><span>👤</span>Perfil</button>
+        </div>
+
+    </div>
+
+    <!-- POPUP DE INSTALAÇÃO NO TELEMÓVEL -->
+    <div id="install-modal">
+        <h3 style="margin-bottom: 6px; color: var(--primary);">Instalar Flora 🌿</h3>
+        <p style="font-size: 13px; margin-bottom: 16px;">Adiciona esta aplicação ao ecrã principal do teu telemóvel para um acesso rápido e prático!</p>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn" onclick="installApp()" style="padding: 10px; font-size: 13px;">Instalar</button>
+            <button class="btn" onclick="closeInstallModal()" style="padding: 10px; font-size: 13px; background: #6B7280; box-shadow: none;">Agora não</button>
+        </div>
+    </div>
+
+    <script>
+        let userName = "Inês";
+        let userEmail = "ines@exemplo.pt";
+        let plantCount = 2;
+
+        function goTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            const nav = document.getElementById('bottom-nav');
+            if(screenId === 's1' || screenId === 's2' || screenId === 's3') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+                if(screenId === 's-memory') {
+                    startMemoryGame();
+                }
+            }
+        }
+
+        function loginUser() {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            let isValid = true;
+
+            if(!email) {
+                document.getElementById('login-email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('login-email-error').style.display = 'none';
+            }
+
+            if(!pass) {
+                document.getElementById('login-pass-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('login-pass-error').style.display = 'none';
+            }
+
+            if(isValid) {
+                userEmail = email;
+                userName = email.split('@')[0];
+                userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+                updateUserData();
+                goTo('s4');
+                showInstallModal();
+            }
+        }
+
+        function registerUser() {
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            let isValid = true;
+
+            if(!name) {
+                document.getElementById('reg-name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-name-error').style.display = 'none';
+            }
+
+            if(!email || !email.includes('@')) {
+                document.getElementById('reg-email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-email-error').style.display = 'none';
+            }
+
+            if(!pass || pass.length < 6) {
+                document.getElementById('reg-pass-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('reg-pass-error').style.display = 'none';
+            }
+
+            if(isValid) {
+                userName = name;
+                userEmail = email;
+                updateUserData();
+                goTo('s4');
+                showInstallModal();
+            }
+        }
+
+        function updateUserData() {
+            document.getElementById('user-greeting').textContent = `Boa tarde, ${userName} (${plantCount} plantas)`;
+            document.getElementById('profile-name').textContent = `Nome: ${userName}`;
+            document.getElementById('profile-email').textContent = `E-mail: ${userEmail}`;
+        }
+
+        function editProfileName() {
+            const newName = prompt("Insere o teu novo nome:", userName);
+            if (newName && newName.trim() !== "") {
+                userName = newName.trim();
+                updateUserData();
+            }
+        }
+
+        function switchTab(screenId, btnElement) {
+            document.querySelectorAll('.screen').forEach(s => {
+                if(s.id !== 's1' && s.id !== 's2' && s.id !== 's3') {
+                    s.classList.remove('active');
+                }
+            });
+            document.getElementById(screenId).classList.add('active');
+            
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            if(screenId === 's-memory') {
+                startMemoryGame();
+            }
+        }
+
+        function waterFirstPlant() {
+            const firstBadge = document.querySelector('#plant-list .card .plant-status');
+            if(firstBadge) {
+                firstBadge.className = 'badge-green plant-status';
+                firstBadge.textContent = 'Em dia';
+            }
+            document.getElementById('next-water').textContent = 'Tudo em dia! ✨';
+        }
+
+        function waterSpecificPlant(btn) {
+            btn.className = 'badge-green plant-status';
+            btn.textContent = 'Em dia';
+            document.getElementById('next-water').textContent = 'Tudo em dia! ✨';
+        }
+
+        function addPlantPrompt() {
+            const plantName = prompt("Nome da nova planta:");
+            if (plantName) {
+                addNewPlant(plantName, 'Luz indireta');
+            }
+        }
+
+        function addFromCatalog(name, light) {
+            addNewPlant(name, light);
+            alert(`"${name}" foi adicionada ao teu jardim! 🌿`);
+            switchTab('s4', document.querySelector('.nav button'));
+        }
+
+        function addNewPlant(name, light) {
+            plantCount++;
+            const list = document.getElementById('plant-list');
+            const newCard = document.createElement('div');
+            newCard.className = 'card';
+            newCard.innerHTML = `
+                <div>
+                    <strong>${name}</strong>
+                    <p style="margin: 2px 0 0 0; font-size: 12px;">${light}</p>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <button class="badge-green plant-status">Em dia</button>
+                    <button class="btn-delete" onclick="deletePlant(this)" title="Remover planta">🗑️</button>
+                </div>
+            `;
+            list.appendChild(newCard);
+            updateUserData();
+        }
+
+        function deletePlant(btn) {
+            if(confirm("Tens a certeza que queres remover esta planta?")) {
+                const card = btn.closest('.card');
+                card.remove();
+                plantCount = Math.max(0, plantCount - 1);
+                updateUserData();
+            }
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById('catalog-search').value.toLowerCase();
+            const items = document.querySelectorAll('.catalog-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function addInventoryItem() {
+            const itemName = prompt("Nome do acessório ou ferramenta:");
+            if(itemName) {
+                const list = document.getElementById('inventory-list');
+                const newCard = document.createElement('div');
+                newCard.className = 'card';
+                newCard.innerHTML = `
+                    <div>
+                        <strong>${itemName}</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">Adicionado recentemente</p>
+                    </div>
+                    <button class="btn-delete" onclick="removeItem(this)" title="Remover item">🗑️</button>
+                `;
+                list.appendChild(newCard);
+            }
+        }
+
+        function removeItem(btn) {
+            btn.closest('.card').remove();
+        }
+
+        function addScheduleTask() {
+            const task = prompt("Descrição da tarefa (ex: Fertilizar cactos):");
+            const day = prompt("Dia da tarefa (ex: Sexta-feira):", "Amanhã");
+            if (task && day) {
+                const list = document.getElementById('schedule-list');
+                const newCard = document.createElement('div');
+                newCard.className = 'card';
+                newCard.innerHTML = `
+                    <div>
+                        <strong>${day}</strong>
+                        <p style="margin: 2px 0 0 0; font-size: 12px;">${task}</p>
+                    </div>
+                    <button class="badge-orange" onclick="toggleTaskStatus(this)">Pendente</button>
+                `;
+                list.appendChild(newCard);
+            }
+        }
+
+        function toggleTaskStatus(btn) {
+            if (btn.classList.contains('badge-orange')) {
+                btn.className = 'badge-green';
+                btn.textContent = 'Concluído';
+            } else {
+                btn.className = 'badge-orange';
+                btn.textContent = 'Pendente';
+            }
+        }
+
+        /* --- LÓGICA DO JOGO DA MEMÓRIA --- */
+        const flowerList = [
+            { name: "Girassóis", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=200&q=80" },
+            { name: "Tulipas", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=200&q=80" },
+            { name: "Rosas", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=200&q=80" },
+            { name: "Catos", img: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=200&q=80" },
+            { name: "Margaridas", img: "https://images.unsplash.com/photo-1557844357-76f2167ef751?auto=format&fit=crop&w=200&q=80" },
+            { name: "Lírio", img: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=200&q=80" },
+            { name: "Cravo", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=200&q=80" },
+            { name: "Violeta", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=200&q=80" },
+            { name: "Hortênsia", img: "https://images.unsplash.com/photo-1508873696983-2df5c920ac2e?auto=format&fit=crop&w=200&q=80" },
+            { name: "Orquídeas", img: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=200&q=80" }
+        ];
+
+        let memoryTimer = null;
+        let timeLeft = 45;
+        let score = 0;
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let isLocked = false;
+        let gameActive = false;
+
+        function startMemoryGame() {
+            clearInterval(memoryTimer);
+            timeLeft = 45;
+            score = 0;
+            matchedPairs = 0;
+            flippedCards = [];
+            isLocked = false;
+            gameActive = true;
+
+            document.getElementById('timer-display').textContent = `⏳ ${timeLeft}s`;
+            document.getElementById('score-display').textContent = `⭐ ${score} pts`;
+
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+
+            // Duplicar para obter duas cartas de cada flor (total 20 cartas)
+            let deck = [...flowerList, ...flowerList];
+            deck.sort(() => Math.random() - 0.5); // Baralhar aleatoriamente
+
+            deck.forEach((flower) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.name = flower.name;
+                card.innerHTML = `
+                    <div class="card-face card-front">🌿</div>
+                    <div class="card-face card-back"><img src="${flower.img}" alt="${flower.name}"></div>
+                `;
+                card.addEventListener('click', flipCard);
+                grid.appendChild(card);
+            });
+
+            memoryTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-display').textContent = `⏳ ${timeLeft}s`;
+                if(timeLeft <= 0) {
+                    clearInterval(memoryTimer);
+                    gameActive = false;
+                    alert(`⏰ Tempo esgotado!\nTerminaste com um total de ${score} pontos.`);
+                }
+            }, 1000);
+        }
+
+        function flipCard() {
+            if (!gameActive || isLocked) return;
+            if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.name === card2.dataset.name;
+
+            if (isMatch) {
+                matchedPairs++;
+                score += 10; // 10 pontos por par
+                document.getElementById('score-display').textContent = `⭐ ${score} pts`;
+                flippedCards = [];
+
+                if (matchedPairs === flowerList.length) {
+                    clearInterval(memoryTimer);
+                    gameActive = false;
+                    setTimeout(() => {
+                        alert(`🏆 Parabéns! Ganhaste o jogo com um total de ${score} pontos!`);
+                    }, 300);
+                }
+            } else {
+                isLocked = true;
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                    isLocked = false;
+                }, 800);
+            }
+        }
+
+        /* --- POPUP DE INSTALAÇÃO --- */
+        function showInstallModal() {
+            setTimeout(() => {
+                document.getElementById('install-modal').style.display = 'block';
+            }, 1200);
+        }
+
+        function closeInstallModal() {
+            document.getElementById('install-modal').style.display = 'none';
+        }
+
+        function installApp() {
+            alert("Para instalar no telemóvel:\n1. Clica no menu do teu navegador (três pontos).\n2. Seleciona 'Adicionar ao ecrã principal' ou 'Instalar aplicação'.");
+            closeInstallModal();
+        }
+    </script>
+</body>
+</html>

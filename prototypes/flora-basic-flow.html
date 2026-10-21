@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora</title>
+    <style>
+        body {
+            background-color: #0b291d;
+            color: #1f3a2e;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .app {
+            width: 360px;
+            height: 640px;
+            background-color: #f4f8f5;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .screen.active {
+            display: flex;
+        }
+        .welcome {
+            background-color: #0b291d;
+            color: white;
+            justify-content: space-between;
+        }
+        h1 { font-size: 24px; margin: 10px 0; }
+        p { font-size: 14px; color: #a3b8ad; }
+        .btn {
+            background-color: #f25c33;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            background: #0b291d;
+            padding: 10px 0;
+            color: white;
+            font-size: 10px;
+        }
+        .nav button {
+            background: none;
+            border: none;
+            color: #a3b8ad;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        .nav button.active {
+            color: #f25c33;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <!-- ECRÃ 1: WELCOME -->
+        <div id="s1" class="screen welcome active">
+            <div>
+                <h3>🌿 Flora</h3>
+                <h1 style="margin-top: 40px;">O teu jardim, mais simples.</h1>
+                <p>Cuida melhor de cada planta. Nós lembramos o resto.</p>
+            </div>
+            <div>
+                <button class="btn" onclick="goTo('s3')">COMEÇAR AGORA</button>
+                <button class="btn btn-outline" onclick="goTo('s2')">JÁ TENHO CONTA</button>
+            </div>
+        </div>
+
+        <!-- ECRÃ 2: ENTRAR -->
+        <div id="s2" class="screen">
+            <p onclick="goTo('s1')" style="cursor:pointer; color: #0b291d; font-weight:bold;">&lt; Voltar</p>
+            <h2>Entrar</h2>
+            <p style="color: #666; margin-bottom: 20px;">Continua a cuidar do teu jardim.</p>
+            
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" value="ines@exemplo.pt">
+            </div>
+            <div class="input-group">
+                <label>Palavra-passe</label>
+                <input type="password" value="123456">
+            </div>
+            <button class="btn" onclick="goTo('s4')" style="margin-top: 20px;">ENTRAR</button>
+        </div>
+
+        <!-- ECRÃ 3: CRIAR CONTA -->
+        <div id="s3" class="screen">
+            <p onclick="goTo('s1')" style="cursor:pointer; color: #0b291d; font-weight:bold;">&lt; Voltar</p>
+            <h2>Criar conta</h2>
+            <p style="color: #666; margin-bottom: 20px;">Começa a cuidar melhor das tuas plantas.</p>
+            
+            <div class="input-group">
+                <label>Nome</label>
+                <input type="text" value="Inês">
+            </div>
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email">
+            </div>
+            <div class="input-group">
+                <label>Palavra-passe</label>
+                <input type="password">
+            </div>
+            <button class="btn" onclick="goTo('s4')">CRIAR CONTA</button>
+        </div>
+
+        <!-- ECRÃ 4: DASHBOARD -->
+        <div id="s4" class="screen" style="padding: 0; justify-content: space-between;">
+            <div style="padding: 20px; overflow-y: auto; flex: 1;">
+                <h2>O teu jardim</h2>
+                <p style="color: #666; margin-bottom: 15px;">Boa tarde, Inês (3 plantas)</p>
+                
+                <div style="background: #0b291d; color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="color: #a3b8ad; margin: 0; font-size: 11px;">PRÓXIMA REGA</p>
+                    <h3 style="margin: 5px 0 10px 0;">Monstera • hoje</h3>
+                    <button class="btn" style="padding: 6px; width: auto; font-size: 12px; margin: 0;">Regar</button>
+                </div>
+
+                <h3>As tuas plantas</h3>
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Monstera</strong>
+                        <p style="color: #666; margin: 2px 0 0 0;">Luz indireta</p>
+                    </div>
+                    <span style="background: #faece7; color: #f25c33; padding: 4px 8px; border-radius: 10px; font-size: 11px; font-weight: bold;">Regar hoje</span>
+                </div>
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Sansevieria</strong>
+                        <p style="color: #666; margin: 2px 0 0 0;">Luz indireta</p>
+                    </div>
+                    <span style="background: #e6f0eb; color: #0b291d; padding: 4px 8px; border-radius: 10px; font-size: 11px; font-weight: bold;">Em dia</span>
+                </div>
+            </div>
+
+            <!-- Menu Inferior -->
+            <div class="nav">
+                <button class="active">🏠<br>Painel</button>
+                <button>📖<br>Catálogo</button>
+                <button>📦<br>Inventário</button>
+                <button>📅<br>Agenda</button>
+                <button>👤<br>Perfil</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function goTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
